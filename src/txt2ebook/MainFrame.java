@@ -28,8 +28,13 @@ import javax.swing.table.TableColumnModel;
 import com.ray.tools.umd.builder.Umd;
 import com.ray.tools.umd.builder.UmdChapters;
 import com.ray.tools.umd.builder.UmdHeader;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 
 /**
@@ -124,6 +129,17 @@ public class MainFrame extends javax.swing.JFrame {
         tcmL.getColumn(0).setPreferredWidth(500);
         tcmL.getColumn(1).setPreferredWidth(80);
         
+        // { foxtodo
+        dlgSetting.setSize(dlgSetting.getPreferredSize());
+        dlgSetting.setLocationRelativeTo(null);
+        // ESC 退出子窗口
+        dlgSetting.getRootPane().registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dlgSetting.dispose();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        // } 查找替换内容
+        
         this.setLocationRelativeTo(null); // 屏幕居中显示
 
         tList = (DefaultTableModel)uChapters.getModel();
@@ -145,6 +161,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         chooseTxt = new javax.swing.JFileChooser();
         dlgSetting = new javax.swing.JDialog();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        edtBookName = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        edtBookAuthor = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
         bgTxtEncoding = new javax.swing.ButtonGroup();
         jPopupMenuItem = new javax.swing.JPopupMenu();
         mInsertChapter = new javax.swing.JMenuItem();
@@ -180,17 +202,78 @@ public class MainFrame extends javax.swing.JFrame {
         chooseTxt.setApproveButtonMnemonic(1);
         chooseTxt.setDialogTitle("选择要转换的文本文件");
 
+        dlgSetting.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         dlgSetting.setTitle("设置啊");
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "书籍信息:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("宋体", 1, 12), new java.awt.Color(0, 0, 255))); // NOI18N
+
+        jLabel2.setText("书名:");
+
+        edtBookName.setText("狐狸之书");
+
+        jLabel3.setText("作者:");
+
+        edtBookAuthor.setText("爱尔兰之狐");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(edtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(edtBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edtBookName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(edtBookAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jButton2.setMnemonic('s');
+        jButton2.setText("保存(S)");
+        jButton2.setToolTipText("");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout dlgSettingLayout = new javax.swing.GroupLayout(dlgSetting.getContentPane());
         dlgSetting.getContentPane().setLayout(dlgSettingLayout);
         dlgSettingLayout.setHorizontalGroup(
             dlgSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(dlgSettingLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         dlgSettingLayout.setVerticalGroup(
             dlgSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(dlgSettingLayout.createSequentialGroup()
+                .addGroup(dlgSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dlgSettingLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(dlgSettingLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         mInsertChapter.setMnemonic('i');
@@ -430,7 +513,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         msg.setForeground(new java.awt.Color(0, 155, 0));
-        msg.setText("★　Txt2Ebook Java 版 by 爱尔兰之狐 Ver:2014-9-22");
+        msg.setText("★　Txt2Ebook Java 版 by 爱尔兰之狐 Ver:2015-1-30");
         msg.setEnabled(false);
         msg.setFocusable(false);
         jMenuBar1.add(msg);
@@ -531,9 +614,11 @@ public class MainFrame extends javax.swing.JFrame {
         switch (outFormat) {
             case OUT_MOBI:
                 oEpub = new FoxEpub(bookname, outDir + bookname + ".mobi");
+                oEpub.BookCreator = author;
                 break;
             case OUT_EPUB:
                 oEpub = new FoxEpub(bookname, outDir + bookname + ".epub");
+                oEpub.BookCreator = author;
                 break;
             case OUT_UMD:
                 umd = new Umd();
@@ -675,12 +760,13 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void mSettingDlgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSettingDlgActionPerformed
-        DlgSetting xx = new DlgSetting(setting, dlgSetting);
-        dlgSetting.setContentPane(xx);
-        dlgSetting.setSize(xx.getPreferredSize());
+ // foxtodo
+        dlgSetting.setSize(dlgSetting.getPreferredSize());
         dlgSetting.setLocationRelativeTo(null);
+        
+        edtBookName.setText((String)setting.get("bookname"));
         dlgSetting.setVisible(true);
-
+ 
     }//GEN-LAST:event_mSettingDlgActionPerformed
 
     private void mTxtAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mTxtAutoActionPerformed
@@ -728,6 +814,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mDeleteMultiChaptersActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setting.put("bookname", edtBookName.getText());
+        setting.put("author", edtBookAuthor.getText());
+        dlgSetting.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     public String fileRead(String filePath, String encoding) {
         StringBuffer retStr = new StringBuffer(409600);
         try {
@@ -774,9 +867,12 @@ public class MainFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        javax.swing.UIManager.put("nimbusBlueGrey", new Color(179, 219, 179));        //控件色
-        javax.swing.UIManager.put("nimbusLightBackground", new Color(228, 242, 228)); // 文本背景色
         javax.swing.UIManager.put("control", new Color(228, 242, 228));               // 控件背景色
+        javax.swing.UIManager.put("nimbusLightBackground", new Color(228, 242, 228)); // 文本背景色
+        javax.swing.UIManager.put("nimbusSelectionBackground", new Color(129, 193, 115));          // 选定文本 129, 193, 115    55, 165, 55    64, 128, 128 
+
+        javax.swing.UIManager.put("nimbusBlueGrey", new Color(179, 219, 179));        //控件色
+        javax.swing.UIManager.put("nimbusBase", new Color(70, 140, 60));              //滚动条，基础颜色
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -785,14 +881,8 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            ex.toString();
         }
         //</editor-fold>
 
@@ -818,15 +908,21 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JCheckBox ckTitleLen;
     private javax.swing.JCheckBox ckTitleRE;
     private javax.swing.JDialog dlgSetting;
+    private javax.swing.JTextField edtBookAuthor;
+    private javax.swing.JTextField edtBookName;
     private javax.swing.JTextField edtTitleLen;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPopupMenu jPopupMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
