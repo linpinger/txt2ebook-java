@@ -17,11 +17,12 @@ public class FoxEpubWriter {
 
 	private boolean isEpub = true;
 
-	private String BookUUID = UUID.randomUUID().toString();
 	private String BookName = "狐狸之书";
-	public String BookCreator = "爱尔兰之狐";
-	private String DefNameNoExt = "FoxMake"; //默认文件名
- 	public String BodyFontStyle="\t\t@font-face { font-family: \"hei\"; src: local(\"Zfull-GB\"); }\n\t\t.content { font-family: \"hei\"; }\n";
+	private String BookCreator = "爱尔兰之狐";
+	private String CSS="h2,h3,h4 { text-align: center; }\n\n@font-face { font-family: \"hei\"; src: local(\"Zfull-GB\"); }\n.content { font-family: \"hei\"; }\n";
+
+	private final String DefNameNoExt = "FoxMake"; //默认文件名
+	private String BookUUID = UUID.randomUUID().toString();
 
 	ArrayList<HashMap<String, Object>> Chapter = new ArrayList<HashMap<String, Object>>(200); //章节结构:1:ID 2:Title 3:Level
 	int ChapterID = 100; //章节ID
@@ -51,12 +52,27 @@ public class FoxEpubWriter {
 			}
 		}
 	}
+
+	public void setBookName(String bookName) {
+		this.BookName = bookName;
+	}
+
+	public void setBookCreator(String creatorName) {
+		this.BookCreator = creatorName;
+	}
+
+	public void setCSS(String css) { // 覆盖CSS
+		this.CSS = css;
+	}
+
 	public void addChapter(String Title, String Content) {
 		addChapter(Title, Content, -1, 1);
 	}
+
 	public void addChapter(String Title, String Content, int iPageID) {
 		addChapter(Title, Content, iPageID, 1);
 	}
+
 	public void addChapter(String Title, String Content, int iPageID, int iLevel) {
 		if (iPageID < 0) {
 			++this.ChapterID;
@@ -77,7 +93,7 @@ public class FoxEpubWriter {
 		this._CreateIndexHTM();
 		this._CreateNCX();
 		this._CreateOPF();
-		this._CreateEpubMiscFiles();
+		this._CreateMiscFiles();
 
 		if (isEpub) {
 			zw.close();
@@ -110,8 +126,8 @@ public class FoxEpubWriter {
 		HashMap<String, Object> mm;
 		int nowID = 0;
 		String nowTitle = "";
- 		int nowLevel = 0;
- 		int nextLevel = 0;
+		int nowLevel = 0;
+		int nextLevel = 0;
 
 		int chapterCount = Chapter.size();
 		int lastIDX = chapterCount - 1;
@@ -159,7 +175,7 @@ public class FoxEpubWriter {
 			.append(BookName).append("</text></navLabel><content src=\"").append(DefNameNoExt).append(".htm\"/></navPoint>\n")
 			.append(NCXList).append("\n</navMap></ncx>\n");
 
-		saveFile(XML.toString(), DefNameNoExt + ".ncx");
+		_SaveFile(XML.toString(), DefNameNoExt + ".ncx");
 	}
 
 	private void _CreateOPF() { //生成OPF文件
@@ -195,10 +211,12 @@ public class FoxEpubWriter {
 				.append(NowHTMLSpine).append("\n</spine>\n\n\n<guide>\n\t<reference type=\"text\" title=\"正文\" href=\"")
 				.append("html/").append(Chapter.get(0).get("id")).append(".html\"/>\n\t<reference type=\"toc\" title=\"目录\" href=\"")
 				.append(DefNameNoExt).append(".htm\"/>\n</guide>\n\n</package>\n\n");
-		saveFile(XML.toString(), DefNameNoExt + ".opf");
+		_SaveFile(XML.toString(), DefNameNoExt + ".opf");
 	}
 
-	private void _CreateEpubMiscFiles() { //生成 epub 必须文件 mimetype, container.xml
+	private void _CreateMiscFiles() { //生成 epub 必须文件 mimetype, container.xml
+		_SaveFile(CSS, DefNameNoExt + ".css"); // 生成 CSS 文件
+
 		if (isEpub) {
 			zw.putBinFile("application/epub+zip".getBytes(), "mimetype", true); // epub规范，第一个文件必须为stored
 		} else {
@@ -209,23 +227,21 @@ public class FoxEpubWriter {
 		XML.append("<?xml version=\"1.0\"?>\n<container version=\"1.0\" xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\">\n\t<rootfiles>\n\t\t<rootfile full-path=\"")
 				.append(this.DefNameNoExt).append(".opf")
 				.append("\" media-type=\"application/oebps-package+xml\"/>\n\t</rootfiles>\n</container>\n");
-		saveFile(XML.toString(), "META-INF/container.xml");
+		_SaveFile(XML.toString(), "META-INF/container.xml");
 	}
 
 	private void _CreateChapterHTML(String Title, String Content, int iPageID) { //生成章节页面
-		StringBuffer HTML = new StringBuffer(20480);
-
+		StringBuffer HTML = new StringBuffer(20480);  // <div class="mbppagebreak"></div>
 		HTML.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"zh-CN\">\n<head>\n\t<title>")
 				.append(Title)
-				.append("</title>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t<style type=\"text/css\">\n\t\th2,h3,h4{text-align:center;}\n")
-				.append(BodyFontStyle)
-				// .append("\t\tp { text-indent: 2em; line-height: 0.5em; }\n\t</style>\n</head>\n<body>\n<h3>")
-				.append("\t</style>\n</head>\n<body>\n<h3>")
+				.append("</title>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"../")
+				.append(DefNameNoExt)
+				.append(".css\" />\n</head>\n<body>\n<h3>")
 				.append(Title)
 				.append("</h3>\n<div class=\"content\">\n\n\n")
 				.append(Content)
 				.append("\n\n\n</div>\n</body>\n</html>\n");
-		saveFile(HTML.toString(), "html/" + iPageID + ".html");
+		_SaveFile(HTML.toString(), "html/" + iPageID + ".html");
 	}
 
 	private void _CreateIndexHTM() { //生成索引页
@@ -244,12 +260,12 @@ public class FoxEpubWriter {
 
 		StringBuffer XML = new StringBuffer(4096);
 		XML.append("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"zh-CN\">\n<head>\n\t<title>")
-				.append(BookName).append("</title>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t<style type=\"text/css\">h2,h3,h4{text-align:center;}</style>\n</head>\n<body>\n<h2>")
+				.append(BookName).append("</title>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(DefNameNoExt).append(".css\" />\n</head>\n<body>\n<h2>")
 				.append(BookName).append("</h2>\n<div class=\"toc\">\n\n").append(NowTOC).append("\n\n</div>\n</body>\n</html>\n");
-		saveFile(XML.toString(), DefNameNoExt + ".htm");
+		_SaveFile(XML.toString(), DefNameNoExt + ".htm");
 	}
 
-	private void saveFile(String content, String saveRelatePath) {
+	private void _SaveFile(String content, String saveRelatePath) {
 		if (isEpub) { // epub
 			zw.putTextFile(content, saveRelatePath);
 		} else { // mobi
@@ -258,9 +274,12 @@ public class FoxEpubWriter {
 	}
 
 	public static void main(String[] args) {
-		FoxEpubWriter oEpub = new FoxEpubWriter(new File("C:\\etc\\xxx.epub"), "书名是我");
-		oEpub.addChapter("第1章", "今天你当天嫩肤流口水司法会计地方<br>\n咖啡碱史蒂文非风机暗示", -1);
-		oEpub.addChapter("第2章", "今2天你当天嫩肤流口水司法会计地方<br>\n咖啡碱史蒂22222222文非风机暗示", -1);
+		FoxEpubWriter oEpub = new FoxEpubWriter(new File("/dev/shm/jgj.epub"), "金刚经");
+		oEpub.setBookName("金刚般若波罗蜜经");
+		oEpub.setBookCreator("鸠摩罗什 译");
+		oEpub.setCSS("h2,h3,h4 { text-align: center; }\n");
+		oEpub.addChapter("第1章", "如是我闻:<br>\n　　一时，佛在舍卫国祇树给孤独园，与大比丘众千二百五十人俱。<br>\n", -1);
+		oEpub.addChapter("真言", "　　那谟婆伽跋帝　钵喇壤　波罗弭多曳　唵伊利底　伊室利　输卢驮　毗舍耶　毗舍耶　莎婆诃<br>\n", -1);
 		oEpub.saveAll();
 	}
 

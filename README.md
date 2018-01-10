@@ -22,8 +22,8 @@ Txt2eBook Java Swing版(文本转电子书:mobi,epub,umd)
 - iHarder.net的FileDrop.java类 <http://iharder.sourceforge.net/current/java/filedrop/>
 
 **下载:**
--   百度网盘下载 <http://pan.baidu.com/s/1bnqxdjL>
--   源代码: <https://github.com/linpinger/txt2ebook-java.git>
+- 百度网盘下载 <http://pan.baidu.com/s/1bnqxdjL>
+- 源代码: <https://github.com/linpinger/txt2ebook-java.git>
 
 **截图:**
  ![](Txt2eBook-Java.png)
@@ -32,7 +32,7 @@ Txt2eBook Java Swing版(文本转电子书:mobi,epub,umd)
 
 - 安装[JRE](http://www.java.com/zh_CN/download/index.jsp)或JDK，绿色版也行，反正需要javaw.exe
 - 将 kindlegen 放到 系统PATH变量中的文件夹，例如c:\WINDOWS\system32\ 或 /usr/bin/ 之类的，也许 Txt2eBook.jar 文件所在的文件夹也行，试试呗
-- 双击Txt2eBook.jar运行程序 或  绿色版java路进/javaw -jar Txt2eBook.jar 或 Linux下 /xxx/ooo/java -jar Txt2eBook.jar
+- 双击Txt2eBook.jar运行程序 或 绿色版java路进/javaw -jar Txt2eBook.jar 或 Linux下 /xxx/ooo/java -jar Txt2eBook.jar
 - 如果看到界面，就可以愉快的玩耍了
 - 制作电子书第一步，按 选择 按钮 选择要转换的txt文件，然后选择要转换的格式，默认mobi格式
 - 按 定位 按钮根据标题正则自动在下面生成章节列表，如果生成错误，可以调整正则表达式和标题最常字数，然后再按 定位按钮
@@ -46,8 +46,8 @@ Txt2eBook Java Swing版(文本转电子书:mobi,epub,umd)
 
 **可能的保存生成电子书的路径:**
 
--   /dev/shm/  如果存在
--   文件所在目录
+- /dev/shm/ 如果存在
+- 文件所在目录
 
 **2018-01-03日新增:**
 
@@ -58,7 +58,8 @@ Txt2eBook Java Swing版(文本转电子书:mobi,epub,umd)
 
 **更新日志:**
 
--   2018-01-03: 添加批量txt转mobi功能，Linux下的使用，原拖动功能只在win下有效，现使用第三方库来实现，比较稳定
--   2015-01-30: 修正生成mobi遇到的卡死问题，更新部分主题以及对话框生成方式，还有作者名
--   2014-09-22: 发布第一版，可以生成mobi,epub,txt,umd格式，PDF暂不支持(主要没更新的欲望啊)
+- 2018-01-10: 同步 FoxEpubWriter.java，修改代码以适应该库的更新
+- 2018-01-03: 添加批量txt转mobi功能，Linux下的使用，原拖动功能只在win下有效，现使用第三方库来实现，比较稳定
+- 2015-01-30: 修正生成mobi遇到的卡死问题，更新部分主题以及对话框生成方式，还有作者名
+- 2014-09-22: 发布第一版，可以生成mobi,epub,txt,umd格式，PDF暂不支持(主要没更新的欲望啊)
 

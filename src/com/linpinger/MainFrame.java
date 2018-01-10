@@ -30,8 +30,8 @@ import javax.swing.KeyStroke;
 
 public class MainFrame extends javax.swing.JFrame {
     String defOutDir = "/dev/shm/" ; // 默认输出目录，如果不存在，就是txt所在目录
-    final String myBodyFontStyle = "\t\t@font-face { font-family: \"hei\"; src: local(\"Zfull-GB\"); }\n\t\t.content { font-family: \"hei\"; }\n";
-    String BodyFontStyle = myBodyFontStyle;
+    final String defCSS = "h2,h3,h4 { text-align: center; }\n\n@font-face { font-family: \"hei\"; src: local(\"Zfull-GB\"); }\n.content { font-family: \"hei\"; }\n";
+    String myCSS = defCSS;
     boolean DelHTML = true ; // 批量txt2mobi时删除临时html文件
 
     final int OUT_MOBI = 1;
@@ -173,8 +173,8 @@ public class MainFrame extends javax.swing.JFrame {
         File saveFile = new File(saveDir, bookname + ".html");
 
         String html = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"zh-CN\">\n<head>\n\t<title>"
-                + bookname + "</title>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t<style type=\"text/css\">\n\t\th2,h3,h4{text-align:center;}\n"
-                + BodyFontStyle + "\t</style>\n</head>\n<body>\n<h2>"
+                + bookname + "</title>\n\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t<style type=\"text/css\">\n"
+                + myCSS + "\t</style>\n</head>\n<body>\n<h2>"
                 + bookname + "</h2>\n\n<div class=\"content\">\n\n"
                 + ToolJava.readText( txt.getPath(), ToolJava.detectTxtEncoding( txt.getPath() ) ).replace("\r", "").replace("\n", "<br />\n")
                 + "\n</div>\n</body>\n</html>\n";
@@ -256,13 +256,13 @@ public class MainFrame extends javax.swing.JFrame {
         switch (outFormat) {
             case OUT_MOBI:
                 oEpub = new FoxEpubWriter(new File(outDir + bookname + ".mobi"), bookname);
-                oEpub.BookCreator = author;
-                oEpub.BodyFontStyle = BodyFontStyle;
+                oEpub.setBookCreator(author);
+                oEpub.setCSS(myCSS);
                 break;
             case OUT_EPUB:
                 oEpub = new FoxEpubWriter(new File(outDir + bookname + ".epub"), bookname);
-                oEpub.BookCreator = author;
-                oEpub.BodyFontStyle = BodyFontStyle;
+                oEpub.setBookCreator(author);
+                oEpub.setCSS(myCSS);
                 break;
             case OUT_UMD:
                 umd = new Umd();
@@ -807,7 +807,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         msg.setForeground(new java.awt.Color(0, 155, 0));
-        msg.setText("★　Txt2Ebook Java 版 by 爱尔兰之狐 Ver:2018-1-3");
+        msg.setText("★　Txt2Ebook Java 版 by 爱尔兰之狐 Ver:2018-1-10");
         msg.setEnabled(false);
         msg.setFocusable(false);
         msg.setFont(new java.awt.Font("文泉驿微米黑", 0, 14)); // NOI18N
@@ -945,11 +945,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         if (jCheckBoxMenuItem1.isSelected()) {
-            BodyFontStyle = myBodyFontStyle;
+            myCSS = defCSS;
             msg.setText("使用字体");
             System.out.println("- Font: myFont");
         } else {
-            BodyFontStyle = "";
+            myCSS = "h2,h3,h4 { text-align: center; }\n";
             msg.setText("不使用字体");
             System.out.println("- Font: 空");
         }
